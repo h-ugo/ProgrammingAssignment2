@@ -17,17 +17,17 @@ makeCacheMatrix <- function(x = matrix()) {
                 x
         }
         
-        setinverse <- function(solve){ 
+        setinverse <- function(solve){  ## this subfunction allows us to set the cached inverse m to the matrix 'solve' 
                 m <<- solve
         }
        
-        getinverse <- function(){
+        getinverse <- function(){       ## this subfunction returns the value of the cached inverse m. If it hasn't been set it will return NULL due to line 9
                 m
         } 
         
         list(set = set, get = get,
              setinverse = setinverse,
-             getinverse = getinverse)
+             getinverse = getinverse)   ##This is the output and allows the functions to be called outside of the function makeCacheMatrix
 }
 
 
@@ -35,13 +35,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ## If there is not a cached value it will calculate the inverse and store it in the cache
 
 cacheSolve <- function(x, ...) {
-        m <- x$getinverse()
-        if(!is.null(m)) {
+        m <- x$getinverse()                     ## This calls the getinverse function from x
+        if(!is.null(m)) {                       ## Checks if there is already a cached value for the inverse
                 message("getting cached data")
-                return(m)
+                return(m)                       ## If there is, it is returned (afer a message telling you it is the cached value) and the function ends
         }
-        data <- x$get()
-        m <- solve(data, ...)
-        x$setinverse(m)
-        m
+        data <- x$get()                         ## calls get function from x. data variable is now the original matrix
+        m <- solve(data, ...)                   ## Calculates the inverse and sets it as the variable m (which we would have previously set as NULL in line 38 if we are here)
+        x$setinverse(m)                         ## uses the setinverse function to update the inverse in the x container environment
+        m                                       ## prints the new inverse
 }
